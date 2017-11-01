@@ -156,6 +156,7 @@ class Planet(Entity):
             for ship in self._docked_ship_ids:
                 self._docked_ships[ship] = self.owner.get_ship(ship)
 
+    # noinspection Annotator,Annotator
     @staticmethod
     def _parse_single(tokens):
         """
@@ -164,6 +165,7 @@ class Planet(Entity):
         :return: The planet ID, planet object, and unused tokens.
         :rtype: (int, Planet, list[str])
         """
+        # noinspection Annotator
         (plid, x, y, hp, r, docking, current, remaining,
          owned, owner, num_docked_ships, *remainder) = tokens
 
@@ -171,6 +173,7 @@ class Planet(Entity):
         docked_ships = []
 
         for _ in range(int(num_docked_ships)):
+            # noinspection Annotator
             ship_id, *remainder = remainder
             docked_ships.append(int(ship_id))
 
@@ -183,6 +186,7 @@ class Planet(Entity):
 
         return plid, planet, remainder
 
+    # noinspection Annotator
     @staticmethod
     def _parse(tokens):
         """
@@ -192,6 +196,7 @@ class Planet(Entity):
         :return: the populated planet dict and the unused tokens.
         :rtype: (dict, list[str])
         """
+        # noinspection Annotator
         num_planets, *remainder = tokens
         num_planets = int(num_planets)
         planets = {}
@@ -326,6 +331,7 @@ class Ship(Entity):
         self.owner = players.get(self.owner)  # All ships should have an owner. If not, this will just reset to None
         self.planet = planets.get(self.planet)  # If not will just reset to none
 
+    # noinspection Annotator
     @staticmethod
     def _parse_single(player_id, tokens):
         """
@@ -336,6 +342,7 @@ class Ship(Entity):
         :return: The ship ID, ship object, and unused tokens.
         :rtype: int, Ship, list[str]
         """
+        # noinspection Annotator
         (sid, x, y, hp, vel_x, vel_y,
          docked, docked_planet, progress, cooldown, *remainder) = tokens
 
@@ -352,6 +359,7 @@ class Ship(Entity):
 
         return sid, ship, remainder
 
+    # noinspection Annotator
     @staticmethod
     def _parse(player_id, tokens):
         """
@@ -363,6 +371,7 @@ class Ship(Entity):
         :rtype: (dict, list[str])
         """
         ships = {}
+        # noinspection Annotator
         num_ships, *remainder = tokens
         for _ in range(int(num_ships)):
             ship_id, ships[ship_id], remainder = Ship._parse_single(player_id, remainder)

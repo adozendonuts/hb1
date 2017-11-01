@@ -145,6 +145,7 @@ class Map:
         return obstacles
 
 
+# noinspection Annotator,Annotator
 class Player:
     """
     :ivar id: The player's unique id

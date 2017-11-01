@@ -1,6 +1,7 @@
 from .entity import Position, Entity
 
 
+# noinspection SyntaxError
 def intersect_segment_circle(start, end, circle, *, fudge=0.5):
     """
     Test whether a line segment and circle intersect.
