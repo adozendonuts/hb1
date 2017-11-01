@@ -10,14 +10,35 @@ import logging
 
 # GAME START
 # Here we define the bot's name as Settler and initialize the game, including communication with the Halite engine.
-game = hlt.Game("Settler")
-# Then we print our start message to the logs
-logging.info("Starting my Settler bot!")
+game = hlt.Game("NewBot")
+
+# Custom logger and handler for timestamps
+FORMAT = "\n %(asctime)s ** %(message)s ********** \n"
+logger = logging.getLogger()
+formatter = logging.Formatter(FORMAT)
+fh = logging.FileHandler("debug.log")
+fh.setLevel(logging.WARNING)
+fh.setFormatter(formatter)
+logger.addHandler(fh)
+logging.info("Starting NewBot!")
+
+# Implementing A* Pathfinding
+graph = hlt.game_map.Map.graph(game.map.width, game.map.height, game.map.all_planets())
+# came_from, cost_so_far = hlt.game_map.Map.a_star_search(graph, (1, 2), (3, 4))
+
+logging.warning(graph)
+# logging.warning(cost_so_far)
 
 while True:
     # TURN START
     # Update the map for the new turn and get the latest version
     game_map = game.update_map()
+
+    # try:
+    #     logging.warning(graph)
+    # except Exception:
+    #     logger.exception("Fatal Error trying to generate grid")
+    #     break
 
     # Here we define the set of commands to be sent to the Halite engine at the end of the turn
     command_queue = []
@@ -27,13 +48,6 @@ while True:
         if ship.docking_status != ship.DockingStatus.UNDOCKED:
             # Skip this ship
             continue
-
-    entities_by_distance = game_map.nearby_entities_by_distance(ship)
-    nearest_planet = None
-    for distance in sorted(entities_by_distance):
-        nearest_planet = next((nearest_entity for nearest_entity in entities_by_distance[distance] if isinstance(nearest_entity, hlt.entity.Planet)), None)
-        if nearest_planet:
-            break
 
         # For each planet in the game (only non-destroyed planets are included)
         for planet in game_map.all_planets():
